@@ -95,16 +95,5 @@ public class MoneyTransferTest {
         assertEquals(balanceOfFirstCard, finalBalanceOfFirstCard);
     }
 
-    @Test
-    @Order(6)
-    void shouldBeErrorWhenNotEnoughMoneyForTransfer() {
-        val dashboardPage = new DashboardPage();
-        val amount = dashboardPage.getCurrentBalanceOfSecondCard() + 10000;
-        val transferPage = dashboardPage.transferToFirstCard();
-        val transferInfo = getSecondCardNumber();
-        transferPage.moneyTransfer(transferInfo, amount);
-        transferPage.invalidMoneyTransfer();
-    }
-
 
 }
