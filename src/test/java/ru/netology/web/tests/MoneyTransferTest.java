@@ -21,6 +21,7 @@ public class MoneyTransferTest {
         val verificationCode = DataHelper.getVerificationCode();
         verificationPage.validVerify(verificationCode);
     }
+
     @Test
     @Order(1)
     void shouldTransferMoneyFromSecondToFirst() {
@@ -95,5 +96,25 @@ public class MoneyTransferTest {
         assertEquals(balanceOfFirstCard, finalBalanceOfFirstCard);
     }
 
-
+    @Test
+    @Order(6)
+    void shouldTransferFullSumFromTheSecondCard() {
+        val dashboardPage = new DashboardPage();
+        val expectedBalanceOfFirstCard = dashboardPage.getCurrentBalanceOfFirstCard();
+        val expectedBalanceOfSecondCard = dashboardPage.getCurrentBalanceOfSecondCard();
+        val amount = expectedBalanceOfSecondCard;{
+            if (expectedBalanceOfSecondCard <= 0) {
+                throw new IllegalArgumentException();
+            }
+        }
+        val transferPage = dashboardPage.transferToFirstCard();
+        val transferInfo = getSecondCardNumber();
+        transferPage.moneyTransfer(transferInfo, amount);
+        val balanceOfFirstCard = getBalanceIfIncrease(expectedBalanceOfFirstCard, amount);
+        val balanceOfSecondCard = getBalanceIfDecrease(expectedBalanceOfSecondCard, amount);
+        val finalBalanceOfFirstCard = dashboardPage.getCurrentBalanceOfFirstCard();
+        val finalBalanceOfSecondCard = dashboardPage.getCurrentBalanceOfSecondCard();
+        assertEquals(balanceOfFirstCard, finalBalanceOfFirstCard);
+        assertEquals(balanceOfSecondCard, finalBalanceOfSecondCard);
+    }
 }
